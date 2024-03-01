@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Button } from "react-native";
 import OrangeDiamond from './assets/orangeDiamondStone.png'
 
 const App = () => {
@@ -13,8 +13,13 @@ const App = () => {
           source={{uri: 'https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M'}}
           style={[styles.image, styles.city]}>
       </Image>
+      <Button
+        // onPress={onPressLearnMore}🦆
+        title="Learn More"
+        color="coral"
+        accessibilityLabel="Learn more about this purple button"
+      />
       {/* <View style={styles.imgContainer}>
-      🦆
         <Image
           source={OrangeDiamond}
           style={styles.image}>
@@ -31,7 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#202020",
+    backgroundColor: "darkslategrey",
     gap: 25
   },
   textContainer: {
@@ -39,7 +44,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color: "#f0f8ff"
+    color: "aliceblue"
   },
   text: {
     fontSize: 18,
