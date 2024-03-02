@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, Button, TouchableOpacity , Alert } from "react-native";
+import * as ImagePicker from 'expo-image-picker';
 import OrangeDiamond from './assets/orangeDiamondStone.png';
 
 const App = () => {
@@ -8,6 +9,15 @@ const App = () => {
   const [count, setCount] = useState(0)
 
   const onPress = () => setCount(count + 1)
+
+  const openImagePickerAsync = async () => {
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
+    if (permissionResult.granted === false) {
+      Alert.alert('Persision to acces camera is required')
+      return
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -21,13 +31,13 @@ const App = () => {
       </Image>
       <View style={styles.buttonsContainer}>
         <Button
-          title={`Count (${count})`}
+          title={`Count:${count}`}
           color="coral"
           accessibilityLabel="Learn more about this purple button"
           onPress={() => Alert.alert(`Touchable Added ${count} times.`)}
         />
-        <TouchableOpacity style={styles.button} onPress={() => Alert.alert(`Touchable Added ${count} times.`)}>
-          <Text style={styles.buttonText}>{`COUNT (${count})`}</Text>
+        <TouchableOpacity style={styles.button} onPress={openImagePickerAsync}>
+          <Text style={styles.buttonText}>SELECT</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.touchable} onPress={onPress}>
@@ -83,12 +93,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "aliceblue",
-    padding: 8,
+    padding: 9,
     borderRadius: 5,
   },
   buttonText: {
     color: "coral",
     fontWeight: "bold",
+    fontSize: 16
   },
   touchable: {
     padding: 1,
