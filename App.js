@@ -1,23 +1,42 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, Button, TouchableOpacity , Alert } from "react-native";
-import * as ImagePicker from 'expo-image-picker';
-import OrangeDiamond from './assets/orangeDiamondStone.png';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import OrangeDiamond from "./assets/orangeDiamondStone.png";
 
 const App = () => {
-  
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
-  const onPress = () => setCount(count + 1)
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const onPress = () => setCount(count + 1);
 
   const openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert('Persision to acces camera is required')
-      return
+      Alert.alert("Persision to acces camera is required");
+      return;
     }
-  }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync();
+
+    if (pickerResult.canceled === "true") {
+      return;
+    }
+    const uri = pickerResult.assets[0].uri
+    console.log(uri);
+    setSelectedImage({ localUri: uri });
+  };
 
   return (
     <View style={styles.container}>
@@ -26,8 +45,14 @@ const App = () => {
         <Text style={styles.text}>Using React Native</Text>
       </View>
       <Image
-          source={{uri: 'https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M'}}
-          style={[styles.image, styles.city]}>
+        source={{
+          uri:
+            selectedImage !== null
+              ? selectedImage
+              : "https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M",
+        }}
+        style={[styles.image, styles.city]}
+      >
       </Image>
       <View style={styles.buttonsContainer}>
         <Button
@@ -37,11 +62,11 @@ const App = () => {
           onPress={() => Alert.alert(`Touchable Added ${count} times.`)}
         />
         <TouchableOpacity style={styles.button} onPress={openImagePickerAsync}>
-          <Text style={styles.buttonText}>SELECT</Text>
+          <Text style={styles.buttonText}>UPDATE</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.touchable} onPress={onPress}>
-          <Text>Press Here to add</Text>
+        <Text>Press Here to add</Text>
       </TouchableOpacity>
       {/* <View style={styles.imgContainer}>
         <Image
@@ -61,18 +86,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "darkslategrey",
-    gap: 25
+    gap: 25,
   },
   textContainer: {
     alignItems: "center",
   },
   title: {
     fontSize: 30,
-    color: "aliceblue"
+    color: "aliceblue",
   },
   text: {
     fontSize: 18,
-    color: "coral"
+    color: "coral",
   },
   imgContainer: {
     flexDirection: "row",
@@ -99,9 +124,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "coral",
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 16,
   },
   touchable: {
     padding: 1,
-  }
+  },
 });
