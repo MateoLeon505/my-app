@@ -13,6 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import OrangeDiamond from "./assets/orangeDiamondStone.png";
 
 const App = () => {
+
   const [count, setCount] = useState(0);
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -34,7 +35,6 @@ const App = () => {
       return;
     }
     const uri = pickerResult.assets[0].uri
-    console.log(uri);
     setSelectedImage({ localUri: uri });
   };
 
@@ -48,10 +48,10 @@ const App = () => {
         source={{
           uri:
             selectedImage !== null
-              ? selectedImage
+              ? selectedImage.localuri
               : "https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M",
         }}
-        style={[styles.image, styles.city]}
+        // style={[styles.image, styles.city]}
       >
       </Image>
       <View style={styles.buttonsContainer}>
