@@ -1,8 +1,14 @@
+import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, Button } from "react-native";
-import OrangeDiamond from './assets/orangeDiamondStone.png'
+import { StyleSheet, Text, View, Image, Button, TouchableOpacity , Alert } from "react-native";
+import OrangeDiamond from './assets/orangeDiamondStone.png';
 
 const App = () => {
+  
+  const [count, setCount] = useState(0)
+
+  const onPress = () => setCount(count + 1)
+
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -13,12 +19,20 @@ const App = () => {
           source={{uri: 'https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M'}}
           style={[styles.image, styles.city]}>
       </Image>
-      <Button
-        // onPress={onPressLearnMore}🦆
-        title="Learn More"
-        color="coral"
-        accessibilityLabel="Learn more about this purple button"
-      />
+      <View style={styles.buttonsContainer}>
+        <Button
+          title={`Count (${count})`}
+          color="coral"
+          accessibilityLabel="Learn more about this purple button"
+          onPress={() => Alert.alert(`Touchable Added ${count} times.`)}
+        />
+        <TouchableOpacity style={styles.button} onPress={() => Alert.alert(`Touchable Added ${count} times.`)}>
+          <Text style={styles.buttonText}>{`COUNT (${count})`}</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={styles.touchable} onPress={onPress}>
+          <Text>Press Here to add</Text>
+      </TouchableOpacity>
       {/* <View style={styles.imgContainer}>
         <Image
           source={OrangeDiamond}
@@ -61,5 +75,22 @@ const styles = StyleSheet.create({
   },
   city: {
     borderRadius: 100,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 80,
+  },
+  button: {
+    backgroundColor: "aliceblue",
+    padding: 8,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "coral",
+    fontWeight: "bold",
+  },
+  touchable: {
+    padding: 1,
   }
 });
