@@ -32,13 +32,18 @@ const App = () => {
     if (pickerResult.canceled === "true") {
       return;
     }
-    const uri = pickerResult.assets[0].uri;
-    setSelectedImage({ localUri: uri });
+    if (Platform.OS=="web") {
+      
+    }
+    else {
+      const uri = pickerResult.assets[0].uri;
+      setSelectedImage({ localUri: uri });
+    }
   };
 
   const openShareDialog = async () => {
     if (!(await Sharing.isAvailableAsync())) {
-      Alert.alert(`Sharing is not available on your platform`);
+      walert(`Sharing is not available on your platform`);
       return;
     }
     await Sharing.shareAsync(selectedImage.localUri);
