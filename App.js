@@ -10,11 +10,10 @@ import {
   Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import OrangeDiamond from "./assets/orangeDiamondStone.png";
+import * as Sharing from "expo-sharing";
 
 const App = () => {
   const [count, setCount] = useState(0);
-
   const [selectedImage, setSelectedImage] = useState(null);
 
   const onPress = () => setCount(count + 1);
@@ -27,7 +26,6 @@ const App = () => {
       Alert.alert("Persision to acces camera is required");
       return;
     }
-
     const pickerResult = await ImagePicker.launchImageLibraryAsync();
 
     if (pickerResult.canceled === "true") {
@@ -37,6 +35,15 @@ const App = () => {
     setSelectedImage({ localUri: uri });
   };
 
+
+  const openShareDialog = async () => {
+    if (!(await Sharing.isAvailableAsync())) {
+      Alert.alert(`Sharing is not available on your platform`);
+      return;
+    }
+    await Sharing.shareAsync()
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -44,27 +51,29 @@ const App = () => {
         <Text style={styles.text}>With React Native</Text>
       </View>
       <View>
-        <Image
-          source={{
-            uri:
-              selectedImage !== null
-                ? selectedImage.localUri
-                : "https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M",
-          }}
-          style={[styles.image, styles.city]}
-        ></Image>
+        <TouchableOpacity onPress={openImagePickerAsync}>
+          <Image
+            source={{
+              uri:
+                selectedImage !== null
+                  ? selectedImage.localUri
+                  : "https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M",
+            }}
+            style={[styles.image, styles.city]}
+          />
+        </TouchableOpacity>
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={openImagePickerAsync}
+            onPress={openShareDialog}
           >
-            <Text style={styles.buttonText}>UPDATE</Text>
+            <Text style={styles.buttonText}>Share</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button2}
             onPress={() => setSelectedImage(null)}
           >
-            <Text style={styles.buttonText2}>RESET</Text>
+            <Text style={styles.buttonText2}>Reset</Text>
           </TouchableOpacity>
         </View>
       </View>
