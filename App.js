@@ -8,6 +8,7 @@ import {
   Button,
   TouchableOpacity,
   Alert,
+  Platform
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Sharing from "expo-sharing";
@@ -35,13 +36,12 @@ const App = () => {
     setSelectedImage({ localUri: uri });
   };
 
-
   const openShareDialog = async () => {
     if (!(await Sharing.isAvailableAsync())) {
       Alert.alert(`Sharing is not available on your platform`);
       return;
     }
-    await Sharing.shareAsync()
+    await Sharing.shareAsync(selectedImage.localUri);
   };
 
   return (
@@ -62,20 +62,23 @@ const App = () => {
             style={[styles.image, styles.city]}
           />
         </TouchableOpacity>
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={openShareDialog}
+        {selectedImage && (
+          <View
+            style={
+              selectedImage ? styles.buttonsContainer : styles.buttonContainer
+            }
           >
-            <Text style={styles.buttonText}>Share</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button2}
-            onPress={() => setSelectedImage(null)}
-          >
-            <Text style={styles.buttonText2}>Reset</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity style={styles.button} onPress={openShareDialog}>
+              <Text style={styles.buttonText}>Share</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button2}
+              onPress={() => setSelectedImage(null)}
+            >
+              <Text style={styles.buttonText2}>Reset</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
       <View style={styles.counterContainer}>
         <Button
@@ -127,6 +130,13 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "flex-start",
+    gap: 50,
+    marginTop: 5,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "flex-start",
     gap: 50,
     marginTop: 5,
