@@ -40,36 +40,45 @@ const App = () => {
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
-        <Text style={styles.title}>First Project</Text>
-        <Text style={styles.text}>Using React Native</Text>
+        <Text style={styles.title}>Pick an Image</Text>
+        <Text style={styles.text}>With React Native</Text>
       </View>
-      <Image
-        source={{
-          uri: "https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M",
-        }}
-        // style={[styles.image, styles.city]}
-      ></Image>
-      <View style={styles.buttonsContainer}>
+      <View>
+        <Image
+          source={{
+            uri:
+              selectedImage !== null
+                ? selectedImage.localUri
+                : "https://fastly.picsum.photos/id/299/200/200.jpg?hmac=ZG5bph3-p62DMNC1tvpW85v7Pd_rR1MCI-_elkQlG7M",
+          }}
+          style={[styles.image, styles.city]}
+        ></Image>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={openImagePickerAsync}
+          >
+            <Text style={styles.buttonText}>UPDATE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button2}
+            onPress={() => setSelectedImage(null)}
+          >
+            <Text style={styles.buttonText2}>RESET</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.counterContainer}>
         <Button
           title={`Count:${count}`}
           color="coral"
           accessibilityLabel="Learn more about this purple button"
           onPress={() => Alert.alert(`Touchable Added ${count} times.`)}
         />
-        <TouchableOpacity style={styles.button} onPress={openImagePickerAsync}>
-          <Text style={styles.buttonText}>UPDATE</Text>
+        <TouchableOpacity style={styles.touchable} onPress={onPress}>
+          <Text>Add to the counter</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.touchable} onPress={onPress}>
-        <Text>Press Here to add</Text>
-      </TouchableOpacity>
-      {/* <View style={styles.imgContainer}>
-        <Image
-          source={OrangeDiamond}
-          style={styles.image}>
-        </Image>
-      </View> */}
-      {/* <StatusBar style="auto" /> */}
     </View>
   );
 };
@@ -109,7 +118,9 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 80,
+    alignItems: "flex-start",
+    gap: 50,
+    marginTop: 5,
   },
   button: {
     backgroundColor: "aliceblue",
@@ -120,6 +131,21 @@ const styles = StyleSheet.create({
     color: "coral",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  button2: {
+    backgroundColor: "dimgrey",
+    padding: 9,
+    borderRadius: 5,
+  },
+  buttonText2: {
+    color: "aliceblue",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  counterContainer: {
+    flexDirection: "column",
+    gap: 5,
+    marginTop: 15,
   },
   touchable: {
     padding: 1,
